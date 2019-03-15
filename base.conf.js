@@ -8,7 +8,8 @@ exports.config = Object.assign({}, require('./hooks'), {
     // on a remote machine).
     debug: true,
     runner: 'local',
-    
+    hostname: '127.0.0.1',
+
     //
     // ==================
     // Specify Test Files
@@ -42,12 +43,6 @@ exports.config = Object.assign({}, require('./hooks'), {
     // from the same test should run tests.
     //
     maxInstances: 1,
-    //
-    // If you have trouble getting all important capabilities together, check out the
-    // Sauce Labs platform configurator - a great tool to configure your capabilities:
-    // https://docs.saucelabs.com/reference/platforms-configurator
-    //
-
 
     capabilities: [{
         maxInstances: 1
@@ -100,16 +95,6 @@ exports.config = Object.assign({}, require('./hooks'), {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
 
-
-    // options
-    // chromeDriverArgs: ['--port=9515', '--url-base=\'/\''], // default for ChromeDriver
-    chromeDriverLogs: './logs',
-
-    // services: ['firefox-profile'],
-    firefoxProfile: {
-       'browser.startup.homepage': 'https://webdriver.io'
-    },
-
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
@@ -126,7 +111,7 @@ exports.config = Object.assign({}, require('./hooks'), {
     // see also: https://webdriver.io/docs/dot-reporter.html
     reporters: [
         'dot',
-        'spec',
+        // 'spec',
         // ['allure', {
         //     outputDir: '/reports/allure-results/',
         //     disableWebdriverStepsReporting: true,
@@ -145,9 +130,11 @@ exports.config = Object.assign({}, require('./hooks'), {
         ui: 'bdd',
         timeout: 60000,
         compilers: [
+            'js:@babel/register',
             'ts-node/register',
             'tsconfig-paths/register'
-        ]
+        ],
+        require: ['./test/helpers/common.js']
     },
     //
     // =====
@@ -171,9 +158,9 @@ exports.config = Object.assign({}, require('./hooks'), {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
-    // beforeSession: function (config, capabilities, specs) {
-    //     require('@babel/register');
-    // },
+    beforeSession: function (config, capabilities, specs) {
+        require('@babel/register');
+    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.

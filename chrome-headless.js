@@ -1,5 +1,4 @@
 exports.config = Object.assign({}, require('./base.conf').config, {
-        hostname    : 'chromedriver',
         path        : '/',
         capabilities: [
             {
