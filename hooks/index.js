@@ -1,6 +1,6 @@
 'use strict'
 
-const cmds = require('wdio-screen-commands')
+// const cmds = require('wdio-screen-commands')
 
 module.exports = {
   // before: () => {

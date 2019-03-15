@@ -9,7 +9,24 @@ exports.config = Object.assign({}, require('./hooks'), {
     debug: true,
     runner: 'local',
     hostname: '127.0.0.1',
-
+    seleniumLogs : "./logs",
+    seleniumArgs: {
+        seleniumArgs: ["-port", "4444"],
+        javaArgs: [
+            "-Xmx1024m"
+        ]
+    },
+    seleniumInstallArgs: {
+        version : "3.9.1",
+        baseURL : "https://selenium-release.storage.googleapis.com",
+        drivers : {
+            chrome : {
+                version : "2.38",
+                arch    : process.arch,
+                baseURL : "https://chromedriver.storage.googleapis.com",
+            }
+        }
+    },
     //
     // ==================
     // Specify Test Files
@@ -45,7 +62,12 @@ exports.config = Object.assign({}, require('./hooks'), {
     maxInstances: 1,
 
     capabilities: [{
-        maxInstances: 1
+        maxInstances: 1,
+        // proxy: {
+        //     proxyType: "manual",
+        //     httpProxy: "http://127.0.0.1:8888"
+        //     // noProxy: "127.0.0.1,localhost"
+        // },
     }],
     //
     // ===================
@@ -78,7 +100,7 @@ exports.config = Object.assign({}, require('./hooks'), {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'https://s01svond-vsweb03.ca.sandia.gov/SiteW',
+    baseUrl: 'https://test',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,

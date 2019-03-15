@@ -11,7 +11,7 @@ exports.config = Object.assign({}, require('./base.conf').config, {
         }
     ],
 
-    services      : ['firefox-profile'],
+    services      : ['firefox-profile', 'selenium-standalone'],
     firefoxProfile: {
         'browser.startup.homepage': 'https://webdriver.io'
     },
