@@ -3,8 +3,8 @@
 # compiled output
 /dist
 /tmp
-test_output
-test
+reports
+
 
 # dependencies
 /node_modules
