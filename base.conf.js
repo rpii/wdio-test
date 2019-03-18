@@ -1,3 +1,5 @@
+mkdirp = require('mkdirp');
+
 exports.config = Object.assign({}, require('./hooks'), {
     //
     // ====================
@@ -6,27 +8,27 @@ exports.config = Object.assign({}, require('./hooks'), {
     //
     // WebdriverIO allows it to run your tests in arbitrary locations (e.g. locally or
     // on a remote machine).
+    sync: true,
     debug: true,
     runner: 'local',
-    hostname: '127.0.0.1',
     seleniumLogs : "./logs",
-    seleniumArgs: {
-        seleniumArgs: ["-port", "4444"],
-        javaArgs: [
-            "-Xmx1024m"
-        ]
-    },
-    seleniumInstallArgs: {
-        version : "3.9.1",
-        baseURL : "https://selenium-release.storage.googleapis.com",
-        drivers : {
-            chrome : {
-                version : "2.38",
-                arch    : process.arch,
-                baseURL : "https://chromedriver.storage.googleapis.com",
-            }
-        }
-    },
+    // seleniumArgs: {
+    //     seleniumArgs: ["-port", "4444"],
+    //     javaArgs: [
+    //         "-Xmx1024m"
+    //     ]
+    // },
+    // seleniumInstallArgs: {
+    //     version : "3.9.1",
+    //     baseURL : "https://selenium-release.storage.googleapis.com",
+    //     drivers : {
+    //         chrome : {
+    //             version : "2.38",
+    //             arch    : process.arch,
+    //             baseURL : "https://chromedriver.storage.googleapis.com",
+    //         }
+    //     }
+    // },
     //
     // ==================
     // Specify Test Files
@@ -124,6 +126,20 @@ exports.config = Object.assign({}, require('./hooks'), {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
+
+    //
+    // Options to be passed to Mocha.
+    // See the full list at http://mochajs.org/
+    mochaOpts: {
+        ui: 'bdd',
+        timeout: 60000,
+        compilers: [
+            'js:@babel/register',
+            'ts-node/register',
+            'tsconfig-paths/register'
+        ]
+    },
+
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,
@@ -145,19 +161,6 @@ exports.config = Object.assign({}, require('./hooks'), {
 
     ],
 
-    //
-    // Options to be passed to Mocha.
-    // See the full list at http://mochajs.org/
-    mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000,
-        compilers: [
-            'js:@babel/register',
-            'ts-node/register',
-            'tsconfig-paths/register'
-        ],
-        require: ['./test/helpers/common.js']
-    },
     //
     // =====
     // Hooks
@@ -238,6 +241,7 @@ exports.config = Object.assign({}, require('./hooks'), {
     afterTest: function (test) {
         if (test.error !== undefined) {
             let name = 'ERROR-' + Date.now();
+            mkdirp('./reports/screenshots/' ) ;
             browser.saveScreenshot('./reports/screenshots/' + name + '.png');
         }
     },
