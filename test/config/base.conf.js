@@ -1,6 +1,5 @@
-mkdirp = require('mkdirp');
 
-exports.config = Object.assign({}, require('./hooks'), {
+exports.config = Object.assign({}, require('../../hooks'), {
     //
     // ====================
     // Runner Configuration
@@ -39,7 +38,7 @@ exports.config = Object.assign({}, require('./hooks'), {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './test/**/*.js'
+        './test/specs/*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -149,15 +148,27 @@ exports.config = Object.assign({}, require('./hooks'), {
     // see also: https://webdriver.io/docs/dot-reporter.html
     reporters: [
         'dot',
-        // 'spec',
-        // ['allure', {
-        //     outputDir: '/reports/allure-results/',
-        //     disableWebdriverStepsReporting: true,
-        //     disableWebdriverScreenshotsReporting: false
-        // }],
-        ['junit', {
-            outputDir: __dirname + '/reports/junit-results'
+        'spec',
+        ['allure', {
+            outputDir: '/reports/allure-reports/',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false
         }],
+        ['junit', {
+            outputDir: './reports/junit-reports/',
+            outputFileFormat: function(opts) { // optional
+                return `results-${opts.cid}.${opts.capabilities}.xml`
+            }
+        }
+        ]
+        // ['html', {
+        //     debug: true,
+        //     outputDir: './reports/html-reports/',
+        //     filename: 'report.html',
+        //     reportTitle: 'Site-W Test Report',
+        //     showInBrowser:true
+        // }
+        // ]
 
     ],
 
@@ -197,10 +208,13 @@ exports.config = Object.assign({}, require('./hooks'), {
         /**
          * Setup the Chai assertion framework
          */
-        // const chai    = require('chai');
-        // global.expect = chai.expect;
-        // global.assert = chai.assert;
-        // global.should = chai.should();
+        var chai = require('chai');
+        global.expect = chai.expect;
+        global.assert = chai.assert;
+        global.should = chai.should();
+
+        const chaiWebdriver = require('chai-webdriverio').default;
+        chai.use(chaiWebdriver(browser));
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -239,11 +253,11 @@ exports.config = Object.assign({}, require('./hooks'), {
      * @param {Object} test test details
      */
     afterTest: function (test) {
-        if (test.error !== undefined) {
-            let name = 'ERROR-' + Date.now();
-            mkdirp('./reports/screenshots/' ) ;
-            browser.saveScreenshot('./reports/screenshots/' + name + '.png');
-        }
+        // if (test.error !== undefined) {
+        //     let name = 'ERROR-' + Date.now();
+        //     mkdirp('./reports/screenshots/' ) ;
+        //     browser.saveScreenshot('./reports/screenshots/' + name + '.png');
+        // }
     },
     /**
      * Hook that gets executed after the suite has ended

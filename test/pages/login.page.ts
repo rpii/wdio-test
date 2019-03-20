@@ -1,4 +1,4 @@
-import Page from 'src/pages/base.page';
+import Page from 'base.page';
 
 class LoginPage extends Page {
 
@@ -15,8 +15,8 @@ class LoginPage extends Page {
     /**
      * define or overwrite page methods
      */
-    open () {
-        super.open('login')       //this will append `login` to the baseUrl to form complete URL
+    navigateTo (browser) {
+        super.navigateTo(browser,'login')       //this will append `login` to the baseUrl to form complete URL
     }
     /**
      * your page specific methods
@@ -28,7 +28,7 @@ class LoginPage extends Page {
         }
     }
 
-    login (username, password) {
+    login (browser, username, password) {
         this.waitForloginPageToLoad();
         this.usernameInput.setValue(username);
         this.passwordInput.setValue(password);
