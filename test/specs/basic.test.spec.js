@@ -16,4 +16,10 @@ describe('webdriver.io page', () => {
         expect(title).to.have.text('WEBDRIVER I/O');
 
     });
+    it('should have the search input enabled',  () => {
+        browser.url('https://webdriver.io/') ;
+
+        expect("//input[@id='search_input_react']").to.be.enabled();
+
+    });
 });
